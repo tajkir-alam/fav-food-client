@@ -18,7 +18,7 @@ const MenuItem = ({item}) => {
                 </div>
             </td>
             <td className='opacity-80 tracking-wider'>{item.description}</td>
-            <td>{item.price}</td>
+            <td>${item.price}</td>
             <td>
                 <button className="btn btn-error text-white">Add To Cart</button>
             </td>
