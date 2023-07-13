@@ -9,10 +9,7 @@ const Main = () => {
     return (
         <div>
             <Nav theme={theme} setTheme={setTheme}></Nav>
-            <div className="custom-container">
-
-                <Outlet></Outlet>
-            </div>
+            <Outlet></Outlet>
             <Footer></Footer>
         </div>
     );
