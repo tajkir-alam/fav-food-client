@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider } from "react-router-dom"; import './index.css';
 import router from './Routes/Routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import CartLength from './providers/CartLength';
+import CartLengthProvider from './providers/CartLengthProvider';
 
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <CartLength>
+    <CartLengthProvider>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} ></RouterProvider>
       </QueryClientProvider>
-    </CartLength>
+    </CartLengthProvider>
   </React.StrictMode>,
 )

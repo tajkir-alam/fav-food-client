@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { CartLengthContext } from '../../providers/CartLength';
+import { CartLengthContext } from '../../providers/CartLengthProvider';
 
 const Nav = ({ theme, setTheme }) => {
     const {cartLength} = useContext(CartLengthContext)

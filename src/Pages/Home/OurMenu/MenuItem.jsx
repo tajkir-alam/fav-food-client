@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import Swal from 'sweetalert2';
 import useAxios from '../../../hooks/useAxios';
-import { CartLengthContext } from '../../../providers/CartLength';
+import { CartLengthContext } from '../../../providers/CartLengthProvider';
 
 const MenuItem = ({ item }) => {
     const [active, setActive] = useState(false);
-    const {cartLength, setCartLength} = useContext(CartLengthContext)
+    const { cartLength, setCartLength } = useContext(CartLengthContext)
     const { _id, name, image, description, price } = item;
     const [axiosIs] = useAxios();
 
@@ -23,13 +23,16 @@ const MenuItem = ({ item }) => {
         }
 
         axiosIs.post('cart', cart)
-            .then(() => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Your item has been added',
-                    showConfirmButton: false,
-                    timer: 1000
-                })
+            .then(data => {
+                if (data.data.insertedId) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your item has been added',
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                }
             })
     }
 
