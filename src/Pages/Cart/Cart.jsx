@@ -3,7 +3,6 @@ import React from 'react';
 import useAxios from '../../hooks/useAxios';
 import { FaMinusSquare, FaPlusCircle } from 'react-icons/fa';
 import Spinner from '../../Components/spinner';
-import Swal from 'sweetalert2';
 
 const Cart = () => {
     const [axiosIs] = useAxios();
@@ -16,13 +15,18 @@ const Cart = () => {
         }
     })
 
-    const handleDecrease = (id) => {
-        axiosIs.patch(`cart/decrease-quantity/${id}`)
-            .then(data => {
-                if (data.data.modifiedCount > 0) {
-                    refetch();
-                }
-            })
+    const totalPriceIs = cart.reduce((sum, p) => p.price + sum, 0);
+
+    const handleDecrease = (id, quantity) => {
+        console.log(quantity);
+        if (quantity > 1) {
+            axiosIs.patch(`cart/decrease-quantity/${id}`)
+                .then(data => {
+                    if (data.data.modifiedCount > 0) {
+                        refetch();
+                    }
+                })
+        }
     }
 
     const handleIncrease = (id) => {
@@ -71,9 +75,12 @@ const Cart = () => {
                                             </td>
                                             <td className='opacity-80 tracking-wider ded w-7/12'>{item.description}</td>
                                             <td className='flex items-center gap-1'>
-                                                <button onClick={() => handleDecrease(item._id)}>
+                                                <button
+                                                    onClick={() => handleDecrease(item._id, item.quantity)}
+                                                    disabled={item.quantity === 1}
+                                                >
                                                     <FaMinusSquare
-                                                        className='text-2xl cursor-pointer hover:text-blue-400 duration-300'
+                                                        className={`text-2xl cursor-pointer hover:text-blue-400 duration-300 ${item.quantity === 1 && 'text-slate-200 hover:text-slate-200'}`}
                                                     />
                                                 </button>
                                                 <p className='text-2xl text-slate-700 dark:text-slate-300'>
@@ -91,6 +98,9 @@ const Cart = () => {
                                 }
                             </tbody>
                         </table>
+                        <h3 className='text-right px-12 py-2 text-2xl text-slate-600 dark:text-slate-200'>
+                            Total Price: {totalPriceIs}
+                        </h3>
                     </div>
             }
         </div>
