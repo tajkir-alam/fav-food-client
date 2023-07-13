@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useAxios from '../../hooks/useAxios';
 import { FaMinusSquare, FaPlusCircle } from 'react-icons/fa';
 import Spinner from '../../Components/spinner';
+import { Link } from 'react-router-dom';
 
 const Cart = () => {
     const [axiosIs] = useAxios();
@@ -15,7 +16,6 @@ const Cart = () => {
         }
     })
 
-    const totalPriceIs = cart.reduce((sum, p) => p.price + sum, 0);
 
     const handleDecrease = (id, quantity) => {
         console.log(quantity);
@@ -29,7 +29,7 @@ const Cart = () => {
         }
     }
 
-    const handleIncrease = (id) => {
+    const handleIncrease = (id, price) => {
         axiosIs.patch(`cart/increase-quantity/${id}`)
             .then(data => {
                 if (data.data.modifiedCount > 0) {
@@ -54,6 +54,7 @@ const Cart = () => {
                                     <th>Description</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,7 +74,7 @@ const Cart = () => {
                                                     <div className="text-sm opacity-50">Germany Fav Food</div>
                                                 </div>
                                             </td>
-                                            <td className='opacity-80 tracking-wider ded w-7/12'>{item.description}</td>
+                                            <td className='opacity-80 tracking-wider ded w-5/12'>{item.description}</td>
                                             <td className='flex items-center gap-1'>
                                                 <button
                                                     onClick={() => handleDecrease(item._id, item.quantity)}
@@ -86,21 +87,21 @@ const Cart = () => {
                                                 <p className='text-2xl text-slate-700 dark:text-slate-300'>
                                                     {item.quantity}
                                                 </p>
-                                                <div onClick={() => handleIncrease(item._id)}>
+                                                <div onClick={() => handleIncrease(item._id, item.price)}>
                                                     <FaPlusCircle
                                                         className='text-2xl cursor-pointer hover:text-blue-400 duration-300'
                                                     />
                                                 </div>
                                             </td>
                                             <td className='text-2xl'>$ {item.price * item.quantity}</td>
+                                            <td>
+                                                <Link to='/order' className="btn btn-error text-white">Order Now</Link>
+                                            </td>
                                         </tr>
                                     )
                                 }
                             </tbody>
                         </table>
-                        <h3 className='text-right px-12 py-2 text-2xl text-slate-600 dark:text-slate-200'>
-                            Total Price: {totalPriceIs}
-                        </h3>
                     </div>
             }
         </div>

@@ -51,7 +51,7 @@ const MenuItem = ({ item }) => {
                     <div className="text-sm opacity-50">Germany Fav Food</div>
                 </div>
             </td>
-            <td className='opacity-80 tracking-wider ded w-7/12'>{description}</td>
+            <td className='opacity-80 tracking-wider w-6/12'>{description}</td>
             <td className='text-lg'>$ {price}</td>
             <td>
                 <button onClick={handleAddToCart} disabled={active} className="btn btn-error text-white">Add To Cart</button>
