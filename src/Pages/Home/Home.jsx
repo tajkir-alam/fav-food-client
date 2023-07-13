@@ -5,7 +5,7 @@ import OurMenu from './OurMenu/OurMenu';
 const Home = () => {
     return (
         <>
-            {/* <Banner /> */}
+            <Banner />
             <OurMenu />
         </>
     );

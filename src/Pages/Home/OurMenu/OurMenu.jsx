@@ -10,13 +10,13 @@ const OurMenu = () => {
     const [axiosIs] = useAxios();
 
     const { data: menu = [], isLoading } = useQuery({
-        queryKey: 'menu',
+        queryKey: ['menu'],
         queryFn: async () => {
             const res = await axiosIs.get('menu');
             return res.data;
         }
     })
-    console.log(menu);
+    // console.log(menu);
 
     return (
         <div className='custom-container mt-16'>
