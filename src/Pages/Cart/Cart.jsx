@@ -1,21 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import useAxios from '../../hooks/useAxios';
 import { FaMinusSquare, FaPlusCircle } from 'react-icons/fa';
 import Spinner from '../../Components/spinner';
 import { Link } from 'react-router-dom';
+import useCart from '../../hooks/useCart';
+import Swal from 'sweetalert2';
 
 const Cart = () => {
     const [axiosIs] = useAxios();
-
-    const { data: cart = [], isLoading, refetch } = useQuery({
-        queryKey: ['cart'],
-        queryFn: async () => {
-            const res = await axiosIs.get('cart');
-            return res.data;
-        }
-    })
-
+    const [cart, refetch, isLoading] = useCart();
 
     const handleDecrease = (id, quantity) => {
         if (quantity > 1) {
@@ -33,6 +26,39 @@ const Cart = () => {
             .then(data => {
                 if (data.data.modifiedCount > 0) {
                     refetch();
+                }
+            })
+    }
+
+    const handleOrderNow = (item) => {
+        const { _id, name, image, description, price, deliveryTime, quantity, itemId } = item;
+        const ordered = {
+            itemId: _id,
+            name,
+            image,
+            description,
+            price,
+            deliveryTime,
+            quantity
+        }
+
+        axiosIs.post('order', ordered)
+            .then(data => {
+                if (data.data.insertedId) {
+                    refetch();
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your order has been succeed',
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                    axiosIs.delete(`cart/${_id}`)
+                        .then(data => {
+                            if (data.data.deletedCount > 0){
+                                refetch();
+                            }
+                    })
                 }
             })
     }
@@ -94,7 +120,7 @@ const Cart = () => {
                                             </td>
                                             <td className='text-2xl'>$ {item.price * item.quantity}</td>
                                             <td>
-                                                <Link to='/order' className="btn btn-error text-white">Order Now</Link>
+                                                <button onClick={() => handleOrderNow(item)} className="btn btn-error text-white">Order Now</button>
                                             </td>
                                         </tr>
                                     )

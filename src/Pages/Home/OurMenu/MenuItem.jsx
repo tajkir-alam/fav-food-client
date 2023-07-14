@@ -7,12 +7,11 @@ import useCart from '../../../hooks/useCart';
 const MenuItem = ({ item }) => {
     const [active, setActive] = useState(false);
     const { cartLength, setCartLength } = useContext(CartLengthContext)
-    const { _id, name, image, description, price } = item;
+    const { _id, name, image, description, price, deliveryTime } = item;
     const [axiosIs] = useAxios();
     const [, refetch] = useCart()
 
     const handleAddToCart = () => {
-        setActive(true)
         setCartLength(cartLength + 1)
 
         const cart = {
@@ -21,12 +20,14 @@ const MenuItem = ({ item }) => {
             image,
             description,
             price,
-            quantity: 1
+            quantity: 1,
+            deliveryTime
         }
 
         axiosIs.post('cart', cart)
             .then(data => {
                 if (data.data.insertedId) {
+                    setActive(true)
                     refetch();
                     Swal.fire({
                         position: 'top-end',
