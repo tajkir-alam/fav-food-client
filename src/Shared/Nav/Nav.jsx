@@ -1,9 +1,14 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CartLengthContext } from '../../providers/CartLengthProvider';
+import useCart from '../../hooks/useCart';
 
 const Nav = ({ theme, setTheme }) => {
     const {cartLength} = useContext(CartLengthContext)
+
+
+    // const [cart] = useCart();
+    // console.log(cart);
 
     const nav = <>
         <li>
