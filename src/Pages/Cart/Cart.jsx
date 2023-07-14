@@ -28,14 +28,13 @@ const Cart = () => {
         }
     }
 
-    const handleIncrease = (id, price, ok) => {
-        axiosIs.patch(`cart/increase-quantity/${id}`, ok)
+    const handleIncrease = (id, price) => {
+        axiosIs.patch(`cart/increase-quantity/${id}`)
             .then(data => {
                 if (data.data.modifiedCount > 0) {
                     refetch();
                 }
             })
-        console.log(ok);
     }
 
     return (
@@ -87,7 +86,7 @@ const Cart = () => {
                                                 <p className='text-2xl text-slate-700 dark:text-slate-300'>
                                                     {item.quantity}
                                                 </p>
-                                                <div onClick={() => handleIncrease(item._id, item.price, item.price * item.quantity + item.price)}>
+                                                <div onClick={() => handleIncrease(item._id, item.price)}>
                                                     <FaPlusCircle
                                                         className='text-2xl cursor-pointer hover:text-blue-400 duration-300'
                                                     />

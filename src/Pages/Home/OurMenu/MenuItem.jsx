@@ -2,12 +2,14 @@ import React, { useContext, useState } from 'react';
 import Swal from 'sweetalert2';
 import useAxios from '../../../hooks/useAxios';
 import { CartLengthContext } from '../../../providers/CartLengthProvider';
+import useCart from '../../../hooks/useCart';
 
 const MenuItem = ({ item }) => {
     const [active, setActive] = useState(false);
     const { cartLength, setCartLength } = useContext(CartLengthContext)
     const { _id, name, image, description, price } = item;
     const [axiosIs] = useAxios();
+    const [, refetch] = useCart()
 
     const handleAddToCart = () => {
         setActive(true)
@@ -25,6 +27,7 @@ const MenuItem = ({ item }) => {
         axiosIs.post('cart', cart)
             .then(data => {
                 if (data.data.insertedId) {
+                    refetch();
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
